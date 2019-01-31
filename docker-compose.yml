@@ -1,0 +1,14 @@
+version: "3"
+services: 
+  backend:
+    build:
+      context: .
+      dockerfile: backend.dockerfile
+    restart: always
+  frontend:
+    build: 
+      context: .
+      dockerfile: nginx.dockerfile
+    restart: always
+    ports: 
+      - 8080:80 # production should be 443 with valid stuff ...
