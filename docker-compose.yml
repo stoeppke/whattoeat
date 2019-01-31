@@ -6,15 +6,19 @@ services:
       dockerfile: backend.dockerfile
     restart: always
     environment: 
-      - VIRTUAL_HOST="backend.i-0a5ee020cd6aa6dee.jprf-dev.de"
-      - LETSENCRYPT_HOST="backend.i-0a5ee020cd6aa6dee.jprf-dev.de"
-      - LETSENCRYPT_EMAIL="your_email@yourdomain.com"
+      - VIRTUAL_HOST=backend.i-0a5ee020cd6aa6dee.jprf-dev.de
+      - LETSENCRYPT_HOST=backend.i-0a5ee020cd6aa6dee.jprf-dev.de
+      - LETSENCRYPT_EMAIL=your_email@yourdomain.com
   frontend:
     build: 
       context: .
       dockerfile: nginx.dockerfile
     restart: always
     environment: 
-      - VIRTUAL_HOST="frontend.i-0a5ee020cd6aa6dee.jprf-dev.de"
-      - LETSENCRYPT_HOST="frontend.i-0a5ee020cd6aa6dee.jprf-dev.de"
-      - LETSENCRYPT_EMAIL="your_email@yourdomain.com"
+      - VIRTUAL_HOST=frontend.i-0a5ee020cd6aa6dee.jprf-dev.de
+      - LETSENCRYPT_HOST=frontend.i-0a5ee020cd6aa6dee.jprf-dev.de
+      - LETSENCRYPT_EMAIL=your_email@yourdomain.com
+networks:
+    default:
+       external:
+         name: webproxy
