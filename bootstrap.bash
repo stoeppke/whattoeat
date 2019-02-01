@@ -69,7 +69,7 @@ yum update -y
             --output text \
             --region $REGION \
             --query "StackResourceDetail.PhysicalResourceId")
-    echo $DnsRecordName > /tmp/DnsRecordName
+    echo -n $DnsRecordName > /tmp/DnsRecordName
 # <-- hostname END
 
 source  "/tmp/docker-compose-letsencrypt-nginx-proxy-companion.bash"
