@@ -48,6 +48,7 @@ yum update -y
         sudo -u ec2-user fish -c 'fisher add barnybug/docker-fish-completion'
         sudo -u ec2-user fish -c 'omf install docker-machine fzf grc'
     # <-- end components
+    sudo chsh -s /bin/bash ec2-user
 # <- fish end
 
 # update dyndns myawstestdomain.chickenkiller.com
