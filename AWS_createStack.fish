@@ -58,6 +58,7 @@ if test (count $argv) -eq 1
         # start AWS stack
         aws cloudformation create-stack \
             --stack-name $CurrentFolder \
+            --capabilities CAPABILITY_IAM \
             --template-url $templateFileUrl
         exit 1
     end
