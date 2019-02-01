@@ -55,15 +55,23 @@ yum update -y
 # curl "http://freedns.afraid.org/dynamic/update.php?aXd5SnR6Q252MXhmSENVdzFadm06MTc5NjAwNzY="
 # echo '0,5,10,15,20,25,30,35,40,45,50,55 * * * * sleep 21 ; wget -O - "http://freedns.afraid.org/dynamic/update.php?aXd5SnR6Q252MXhmSENVdzFadm06MTc5NjAwNzY=" >> /tmp/freedns_myawstestdomain_chickenkiller_com.log 2>&1 &' >> /etc/crontab
 
-# --> get asociated hostname
-    StackName=
+# --> get asociated dns hostname
+    REGION=$(curl -s http://169.254.169.254/latest/dynamic/instance-identity/document|grep region|awk -F\" '{print $4}')
+    INSTANCE_ID=$(curl -s http://169.254.169.254/latest/meta-data/instance-id)
+    StackName=$(aws ec2 describe-instances \
+        --instance-id $INSTANCE_ID \
+        --query 'Reservations[*].Instances[*].Tags[?Key==`aws:cloudformation:stack-name`].Value' \
+        --region $REGION \
+        --output text)
     DnsRecordName=$(aws cloudformation describe-stack-resource \
-            --stack-name $CurrentFolder \
+            --stack-name $StackName \
             --logical-resource-id "myDNSRecord" \
             --output text \
+            --region $REGION \
             --query "StackResourceDetail.PhysicalResourceId")
+    echo $DnsRecordName > /tmp/DnsRecordName
 # <-- hostname END
 
 source  "/tmp/docker-compose-letsencrypt-nginx-proxy-companion.bash"
 sleep 10
-source "/tmp/docker-nextcloud-letsencrypt.bash"
+source "/tmp/docker-nextcloud-letsencrypt.bash" #TODO applay webap docker-compose file here

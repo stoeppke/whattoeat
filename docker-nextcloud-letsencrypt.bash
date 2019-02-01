@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # publicHostname=$(curl -s http://169.254.169.254/latest/meta-data/public-hostname)
-publicHostname=$(echo -n $(curl -s http://169.254.169.254/latest/meta-data/instance-id).jprf-dev.de)
+publicHostname=$(echo -n $(curl -s http://169.254.169.254/latest/meta-data/instance-id).jprf-dev.de) #TODO set hostname by /tmp/DnsRecordName
 # VIRTUAL_HOST_List=$(echo -n "www."$publicHostname","$publicHostname)
 VIRTUAL_HOST_List=$(echo -n "www."$publicHostname)
 # VIRTUAL_HOST_List_spaceSep=$(echo -n "www."$publicHostname" "$publicHostname)

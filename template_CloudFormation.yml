@@ -1,6 +1,13 @@
 ---
 AWSTemplateFormatVersion: 2010-09-09
-Description: CFDescriptionName
+Description: >
+  Setup with this template: 
+  - wildcarded subdomain to jprf-dev.de. named like $pwd
+  - bootspraped ec2 instance
+  - IMA rules to enable ec2 instance to get informations
+  - security-groupes opening http/s, icmp ping and ssh on 22
+  Different strings are replaced when copying template to actual cloudFormation file while starting the stack using the AWS_createStack.fish, these are: 
+  - S3WorkingDir, EC2BootstrapScript, CFDescriptionName, DnsSubdomainName
 
 Resources: 
   # defining all security group for this instance
@@ -42,14 +49,37 @@ Resources:
       Path: "/"
       Policies: 
         - 
-          PolicyName: "ec2_access_s3"
+          PolicyName: "s3_readonly"
           PolicyDocument: 
             Version: "2012-10-17"
             Statement: 
               - 
                 Effect: "Allow"
-                Action: "s3:*"
+                Action: 
+                  - "s3:Get*"
+                  - "s3:List*"
                 Resource: "*"
+        - 
+          PolicyName: "awsCli_descrobe-instance"
+          PolicyDocument: 
+            Version: "2012-10-17"
+            Statement: 
+              - 
+                Effect: "Allow"
+                Action: 
+                  - "ec2:DescribeInstances"
+                Resource: "*"
+        - 
+          PolicyName: "awsCli_DescribeStackResource"
+          PolicyDocument: 
+            Version: "2012-10-17"
+            Statement: 
+              - 
+                Effect: "Allow"
+                Action: 
+                  - "cloudformation:DescribeStackResource"
+                Resource: "*"
+
   RootInstanceProfile: 
     Type: "AWS::IAM::InstanceProfile"
     Properties: 
@@ -58,7 +88,7 @@ Resources:
         - 
           Ref: "MyRule"
 
-  myEC2Instance:
+  myEC2Instance: # !!! don't rename this, its name is used while bootsrap.bash and AWS_createStack.fish
     Type: AWS::EC2::Instance
     Properties:
       KeyName: TMP_Win
