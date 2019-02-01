@@ -55,6 +55,15 @@ yum update -y
 # curl "http://freedns.afraid.org/dynamic/update.php?aXd5SnR6Q252MXhmSENVdzFadm06MTc5NjAwNzY="
 # echo '0,5,10,15,20,25,30,35,40,45,50,55 * * * * sleep 21 ; wget -O - "http://freedns.afraid.org/dynamic/update.php?aXd5SnR6Q252MXhmSENVdzFadm06MTc5NjAwNzY=" >> /tmp/freedns_myawstestdomain_chickenkiller_com.log 2>&1 &' >> /etc/crontab
 
+# --> get asociated hostname
+    StackName=
+    DnsRecordName=$(aws cloudformation describe-stack-resource \
+            --stack-name $CurrentFolder \
+            --logical-resource-id "myDNSRecord" \
+            --output text \
+            --query "StackResourceDetail.PhysicalResourceId")
+# <-- hostname END
+
 source  "/tmp/docker-compose-letsencrypt-nginx-proxy-companion.bash"
 sleep 10
 source "/tmp/docker-nextcloud-letsencrypt.bash"
