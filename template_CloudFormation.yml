@@ -1,0 +1,71 @@
+---
+AWSTemplateFormatVersion: 2010-09-09
+Description: CFDescriptionName
+
+Resources: 
+  # defining all security group for this instance
+  ServerSecurityGroup:
+      Type: AWS::EC2::SecurityGroup
+      Properties:
+        GroupDescription: ssh in
+        SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0          
+        - IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: icmp
+          FromPort: 8
+          ToPort: -1
+          CidrIp: 0.0.0.0/0          
+
+  myEC2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      KeyName: TMP_Win
+      DisableApiTermination: false
+      ImageId: ami-0cfbf4f6db41068ac # amazon linux
+      # InstanceType: t2.micro # t2.medium 4g 2c
+      InstanceType: t2.small # t2.medium 4g 2c
+      Monitoring: false
+      IamInstanceProfile: s3readOnly
+      SecurityGroupIds:
+        - !Ref ServerSecurityGroup
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash -ex
+          yum update -y
+          aws s3 cp s3://S3WorkingDir/ /tmp/ --recursive
+          chmod +x /tmp/EC2BootstrapScript
+          bash -c /tmp/EC2BootstrapScript
+      Tags:
+        - Key: key
+          Value: value
+
+  myDNSRecordWildcard:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      HostedZoneName: 'jprf-dev.de.'
+      Comment: DNS name for my instance.
+      Name: !Join ['', ['*.', !Ref 'myEC2Instance', ., 'jprf-dev.de.']]
+      Type: A
+      TTL: '900'
+      ResourceRecords:
+      - !GetAtt myEC2Instance.PublicIp
+  myDNSRecord:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      HostedZoneName: 'jprf-dev.de.'
+      Comment: DNS name for my instance.
+      Name: !Join ['', [!Ref 'myEC2Instance', ., 'jprf-dev.de.']]
+      Type: A
+      TTL: '900'
+      ResourceRecords:
+      - !GetAtt myEC2Instance.PublicIp
