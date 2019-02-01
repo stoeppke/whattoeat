@@ -26,7 +26,7 @@ Resources:
           ToPort: -1
           CidrIp: 0.0.0.0/0          
 
-  RootRole: 
+  MyRule: 
     Type: "AWS::IAM::Role"
     Properties: 
       AssumeRolePolicyDocument: 
@@ -42,24 +42,21 @@ Resources:
       Path: "/"
       Policies: 
         - 
-          PolicyName: "root"
+          PolicyName: "ec2_access_s3"
           PolicyDocument: 
             Version: "2012-10-17"
             Statement: 
               - 
                 Effect: "Allow"
-                Action: 
-                  - "s3:Get"
-                  - "s3:List"
-                Resource: "*
-  
+                Action: "s3:*"
+                Resource: "*"
   RootInstanceProfile: 
     Type: "AWS::IAM::InstanceProfile"
     Properties: 
       Path: "/"
       Roles: 
         - 
-          Ref: "RootRole"
+          Ref: "MyRule"
 
   myEC2Instance:
     Type: AWS::EC2::Instance
@@ -71,7 +68,7 @@ Resources:
       InstanceType: t2.small # t2.medium 4g 2c
       Monitoring: false
       # IamInstanceProfile: s3readOnly
-      IamInstanceProfile: RootInstanceProfile
+      IamInstanceProfile: !Ref RootInstanceProfile
       SecurityGroupIds:
         - !Ref ServerSecurityGroup
       UserData:
