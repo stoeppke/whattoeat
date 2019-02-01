@@ -38,6 +38,7 @@ if test (count $argv) -eq 1
             sed -i "" -e "s;S3WorkingDir;$S3WorkingDir;g" $CloudFormationTemplateName
             sed -i "" -e "s;EC2BootstrapScript;$EC2BootstrapScript;g" $CloudFormationTemplateName
             sed -i "" -e "s;CFDescriptionName;$CFDescriptionName;g" $CloudFormationTemplateName
+            sed -i "" -e "s;DnsSubdomainName;$CurrentFolder;g" $CloudFormationTemplateName
             # <- CF end
         else
             echo "template_$CloudFormationTemplateName file is missing"

@@ -21,7 +21,7 @@ Resources:
           FromPort: 443
           ToPort: 443
           CidrIp: 0.0.0.0/0
-        - IpProtocol: icmp
+        - IpProtocol: icmp # enable ping response
           FromPort: 8
           ToPort: -1
           CidrIp: 0.0.0.0/0          
@@ -46,15 +46,15 @@ Resources:
           chmod +x /tmp/EC2BootstrapScript
           bash -c /tmp/EC2BootstrapScript
       Tags:
-        - Key: key
-          Value: value
+        - Key: billing
+          Value: testing
 
   myDNSRecordWildcard:
     Type: AWS::Route53::RecordSet
     Properties:
       HostedZoneName: 'jprf-dev.de.'
       Comment: DNS name for my instance.
-      Name: !Join ['', ['*.', !Ref 'myEC2Instance', ., 'jprf-dev.de.']]
+      Name: !Join ['', ['*.', 'DnsSubdomainName', ., 'jprf-dev.de.']]
       Type: A
       TTL: '900'
       ResourceRecords:
@@ -64,7 +64,7 @@ Resources:
     Properties:
       HostedZoneName: 'jprf-dev.de.'
       Comment: DNS name for my instance.
-      Name: !Join ['', [!Ref 'myEC2Instance', ., 'jprf-dev.de.']]
+      Name: !Join ['', ['DnsSubdomainName', ., 'jprf-dev.de.']]
       Type: A
       TTL: '900'
       ResourceRecords:
