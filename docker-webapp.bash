@@ -18,7 +18,7 @@ cd /tmp
     # -> comainion Host setup for this web-app
         sed -ie 's;VIRTUAL_HOST_frontend.*;\
         VIRTUAL_HOST_frontend='$VIRTUAL_HOST_List_frontend';' .env
-        sed -ie 's;VIRTUAL_HOST_backend.*;\
+        sed -ie 's;VIRTUAL_HOST_backend.*;https://'$VIRTUAL_HOST_backend';' index.html
         VIRTUAL_HOST='$VIRTUAL_HOST_List';' .env
 
         # sed -ie 's;LETSENCRYPT_HOST.*;\
