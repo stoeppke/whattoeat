@@ -13,7 +13,7 @@ cd /tmp #TODO: move website stuff to /srv
     # -> comainion Host setup for this web-app
         sed -ie 's;VIRTUAL_HOST_frontend.*;VIRTUAL_HOST_frontend='$VIRTUAL_HOST_frontend';' .env
         sed -ie 's;VIRTUAL_HOST_backend.*;VIRTUAL_HOST_backend='$VIRTUAL_HOST_backend';' .env
-        sed -ie 's;VIRTUAL_HOST_backend.*;https://'$VIRTUAL_HOST_backend';' index.html
+        sed -ie 's;VIRTUAL_HOST_backend.*;https://'$VIRTUAL_HOST_backend'";' index.html
 
         sed -ie 's;your_email@yourdomain.com;stoeppke@gmail.com;g' .env
     # <- comanion END
