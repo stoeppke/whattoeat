@@ -25,17 +25,10 @@ yum update -y
         # su ec2-user
         cd /home/ec2-user
 
-
         sudo -u ec2-user bash -c \
             "git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf"
         sudo -u ec2-user bash -c \
             "~/.fzf/install --all"
-
-        # git clone https://github.com/garabik/grc.git
-        # cd grc
-        # ./install.sh
-        # cd ../
-        # rm -rf grc
 
         sudo -u ec2-user bash -c \
             "curl -L https://get.oh-my.fish > install"
@@ -50,10 +43,6 @@ yum update -y
     # <-- end components
     sudo chsh -s /bin/bash ec2-user
 # <- fish end
-
-# update dyndns myawstestdomain.chickenkiller.com
-# curl "http://freedns.afraid.org/dynamic/update.php?aXd5SnR6Q252MXhmSENVdzFadm06MTc5NjAwNzY="
-# echo '0,5,10,15,20,25,30,35,40,45,50,55 * * * * sleep 21 ; wget -O - "http://freedns.afraid.org/dynamic/update.php?aXd5SnR6Q252MXhmSENVdzFadm06MTc5NjAwNzY=" >> /tmp/freedns_myawstestdomain_chickenkiller_com.log 2>&1 &' >> /etc/crontab
 
 # --> get asociated dns hostname
     REGION=$(curl -s http://169.254.169.254/latest/dynamic/instance-identity/document|grep region|awk -F\" '{print $4}')
