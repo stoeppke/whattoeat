@@ -1,9 +1,7 @@
 version: "3"
 services: 
   backend:
-    build:
-      context: .
-      dockerfile: backend.dockerfile
+    image: stoeppke/menstruation-server.rs
     restart: always
     environment: 
       VIRTUAL_HOST: ${VIRTUAL_HOST_backend}
