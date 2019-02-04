@@ -7,7 +7,7 @@ VIRTUAL_HOST_List_spaceSep=$(echo -n "www."$publicHostname)
 
 publicIpv4=$(curl -s http://169.254.169.254/latest/meta-data/public-ipv4)
 
-cd /tmp
+cd /tmp #TODO: move website stuff to /srv 
 
 # -> setting up .env file
     # -> comainion Host setup for this web-app
